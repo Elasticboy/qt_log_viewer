@@ -3,7 +3,9 @@ QT += \
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tabitem.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    tabitem.h
