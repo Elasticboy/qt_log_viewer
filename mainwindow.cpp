@@ -63,5 +63,5 @@ void MainWindow::openFilesDialog()
 void MainWindow::openFile(const QString& filename)
 {
     auto newTab = new TabItem(filename);
-    m_tabs->addTab(newTab, filename);
+    m_tabs->addTab(newTab, newTab->label());
 }

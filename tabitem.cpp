@@ -3,11 +3,16 @@
 #include <QPlainTextEdit>
 #include <QFile>
 #include <QTextStream>
+#include <QFileInfo>
 
 TabItem::TabItem(const QString& filename, QWidget *parent) :
     QPlainTextEdit(parent)
 {
     setReadOnly(true);
+
+    // Set title
+    QFileInfo fileInfo(filename);
+    m_label = fileInfo.fileName();
 
     loadFile(filename);
 }

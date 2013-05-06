@@ -10,8 +10,12 @@ class TabItem : public QPlainTextEdit
 public:
     explicit TabItem(const QString& filename, QWidget *parent = 0);
 
+    QString label() const { return m_label; }
+
 private:
     void loadFile(const QString& filename);
+
+    QString m_label;
 
 signals:
 
