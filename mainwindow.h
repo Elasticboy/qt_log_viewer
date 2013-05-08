@@ -23,8 +23,11 @@ private:
     QVBoxLayout *m_vLayout;
     QMenuBar* m_menuBar;
     QMenu * m_fileMenu;
-    QAction * m_actOpenfile;
+    QMenu * m_viewMenu;
+    QAction * m_actOpen;
     QAction * m_actExit;
+    QAction * m_actZoomIn;
+    QAction * m_actZoomOut;
 
     QTabWidget* m_tabs;
     
@@ -32,6 +35,8 @@ signals:
     
 public slots:
     void openFilesDialog();
+    void zoomIn();
+    void zoomOut();
     
 };
 
