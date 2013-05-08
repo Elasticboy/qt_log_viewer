@@ -47,14 +47,16 @@ void MainWindow::initLayout()
 
 void MainWindow::openFilesDialog()
 {
-    auto fd = new QFileDialog();
-    fd->setFileMode(QFileDialog::ExistingFile);
-    fd->setViewMode(QFileDialog::Detail);
-    auto result = fd->exec();
+    auto fileDialog = new QFileDialog(this);
+    fileDialog->setFileMode(QFileDialog::ExistingFiles);
+    fileDialog->setViewMode(QFileDialog::Detail);
+    fileDialog->setFilter(QDir::Files);
+    fileDialog->setNameFilter(tr("Log File (*.log *.txt)"));
+    auto result = fileDialog->exec();
 
     QStringList selectedFiles;
     if (result) {
-        selectedFiles = fd->selectedFiles();
+        selectedFiles = fileDialog->selectedFiles();
         for (QString filename : selectedFiles) {
             openFile(filename);
         }
