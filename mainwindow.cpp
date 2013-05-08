@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QFileDialog>
+#include <QPushButton>
 #include "tabitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -63,5 +64,8 @@ void MainWindow::openFilesDialog()
 void MainWindow::openFile(const QString& filename)
 {
     auto newTab = new TabItem(filename);
-    m_tabs->addTab(newTab, newTab->label());
+    const auto index = m_tabs->addTab(newTab, newTab->label());
+
+    auto close = new QPushButton(this);
+    m_tabs->tabBar()->setTabButton(index, QTabBar::RightSide, close);
 }
