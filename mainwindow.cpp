@@ -13,46 +13,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::initMenu()
 {
-    m_menuBar = new QMenuBar();
-    m_fileMenu = new QMenu(tr("File"), this);
-    m_viewMenu = new QMenu(tr("View"), this);
-
-    /**
-      * File Menu
-      */
-    // Define actions
-    m_actOpen   = new QAction(tr("&Open..."), this);
-    m_actExit   = new QAction(tr("&Quit"), this);
-
-    // Add actions
-    m_fileMenu->addAction(m_actOpen);
-    m_fileMenu->addAction(m_actExit);
+    m_menuBar = new MenuBar();
 
     // Bind actions
-    connect(m_actOpen, SIGNAL(triggered()), this, SLOT(openFilesDialog()));
-    connect(m_actExit, SIGNAL(triggered()), this, SLOT(close()));
+    connect(m_menuBar, SIGNAL(openTriggered()),     this, SLOT(openFilesDialog()));
+    connect(m_menuBar, SIGNAL(closeTabTriggered()), this, SLOT(closeTab()));
+    connect(m_menuBar, SIGNAL(quitTriggered()),     this, SLOT(close()));
 
-    // Add menus to the menu bar
-    m_menuBar->addMenu(m_fileMenu);
-
-    /**
-      * View Menu
-      */
-    // Define actions
-    m_actZoomIn     = new QAction(tr("Zoom in"), this);
-    m_actZoomOut    = new QAction(tr("Zoom out"), this);
-
-    // Add actions
-    m_viewMenu->addAction(m_actZoomIn);
-    m_viewMenu->addAction(m_actZoomOut);
-
-    // Bind actions
-    connect(m_actZoomIn, SIGNAL(triggered()), this, SLOT(openFilesDialog()));
-    connect(m_actZoomOut, SIGNAL(triggered()), this, SLOT(close()));
-
-    // Add menus to the menu bar
-    m_menuBar->addMenu(m_viewMenu);
-
+    connect(m_menuBar, SIGNAL(zoomInTriggered()),   this, SLOT(zoomIn()));
+    connect(m_menuBar, SIGNAL(zoomOutTriggered()),  this, SLOT(zoomOut()));
 }
 
 void MainWindow::initLayout()
@@ -61,7 +30,6 @@ void MainWindow::initLayout()
 
     m_tabs = new QTabWidget();
     m_vLayout->addWidget(m_tabs);
-
     m_vLayout->setMenuBar(m_menuBar);
 
     setLayout(m_vLayout);
@@ -80,26 +48,51 @@ void MainWindow::openFilesDialog()
     if (result) {
         selectedFiles = fileDialog->selectedFiles();
         for (QString filename : selectedFiles) {
-            openFile(filename);
+            newTab(filename);
         }
     }
 }
 
-void MainWindow::openFile(const QString& filename)
+void MainWindow::newTab(const QString& filename)
 {
     auto newTab = new TabItem(filename);
     const auto index = m_tabs->addTab(newTab, newTab->label());
 
-    auto close = new QPushButton(this);
-    m_tabs->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+    //auto close = new QPushButton(this);
+    //m_tabs->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+}
+
+void MainWindow::closeTab()
+{
+    const auto currentIndex = m_tabs->currentIndex();
+    if (currentIndex != -1) {
+        m_tabs->removeTab(currentIndex);
+    }
+
 }
 
 void MainWindow::zoomIn()
 {
     // TODO: Zoom in
+    setZoom(1);
 }
 
 void MainWindow::zoomOut()
 {
     // TODO: Zoom out
+    setZoom(-1);
+}
+
+void MainWindow::setZoom(const int& step)
+{
+    const auto MIN_FONT_SIZE = 6;
+    const auto MAX_FONT_SIZE = 40;
+
+    auto newFont = QFont(m_tabs->currentWidget()->font());
+    const auto fontSize = newFont.pointSize() + step;
+
+    if (MIN_FONT_SIZE <= fontSize && MAX_FONT_SIZE >= fontSize) {
+        newFont.setPointSize(fontSize);
+        m_tabs->currentWidget()->setFont(newFont);
+    }
 }

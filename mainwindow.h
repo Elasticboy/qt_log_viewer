@@ -3,11 +3,9 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QMenuBar>
-#include <QMenu>
-#include <QAction>
 #include <QTableWidget>
 #include <QString>
+#include "menubar.h"
 
 class MainWindow : public QWidget
 {
@@ -18,16 +16,11 @@ public:
 private:
     void initMenu();
     void initLayout();
-    void openFile(const QString& filename);
+    void newTab(const QString& filename);
+    void setZoom(const int& step);
 
     QVBoxLayout *m_vLayout;
-    QMenuBar* m_menuBar;
-    QMenu * m_fileMenu;
-    QMenu * m_viewMenu;
-    QAction * m_actOpen;
-    QAction * m_actExit;
-    QAction * m_actZoomIn;
-    QAction * m_actZoomOut;
+    MenuBar* m_menuBar;
 
     QTabWidget* m_tabs;
     
@@ -35,6 +28,7 @@ signals:
     
 public slots:
     void openFilesDialog();
+    void closeTab();
     void zoomIn();
     void zoomOut();
     
