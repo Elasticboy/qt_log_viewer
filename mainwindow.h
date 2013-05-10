@@ -14,6 +14,7 @@ class MainWindow : public QWidget
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = 0);
+    virtual ~MainWindow();
 
 private:
     void initMenu();
@@ -31,7 +32,8 @@ signals:
     
 public slots:
     void openFilesDialog();
-    void closeTab();
+    void closeTab(const int& index);
+    void closeCurrentTab();
     void zoomIn();
     void zoomOut();
     
