@@ -2,7 +2,6 @@
 
 #include <QFileDialog>
 #include <QPushButton>
-#include "tabitem.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent)
@@ -27,12 +26,19 @@ void MainWindow::initMenu()
 void MainWindow::initLayout()
 {
     m_vLayout = new QVBoxLayout();
+    m_vLayout->setContentsMargins(0, 0, 0, 0);
 
     m_tabs = new QTabWidget();
+
     m_vLayout->addWidget(m_tabs);
     m_vLayout->setMenuBar(m_menuBar);
 
     setLayout(m_vLayout);
+}
+
+TabItem* MainWindow::currentTab() const
+{
+    return static_cast<TabItem*>(m_tabs->currentWidget());
 }
 
 void MainWindow::openFilesDialog()
@@ -58,8 +64,8 @@ void MainWindow::newTab(const QString& filename)
     auto newTab = new TabItem(filename);
     const auto index = m_tabs->addTab(newTab, newTab->label());
 
-    //auto close = new QPushButton(this);
-    //m_tabs->tabBar()->setTabButton(index, QTabBar::RightSide, close);
+    auto closeBtn = new QPushButton(this);
+    m_tabs->tabBar()->setTabButton(index, QTabBar::RightSide, closeBtn);
 }
 
 void MainWindow::closeTab()
@@ -85,14 +91,8 @@ void MainWindow::zoomOut()
 
 void MainWindow::setZoom(const int& step)
 {
-    const auto MIN_FONT_SIZE = 6;
-    const auto MAX_FONT_SIZE = 40;
-
-    auto newFont = QFont(m_tabs->currentWidget()->font());
-    const auto fontSize = newFont.pointSize() + step;
-
-    if (MIN_FONT_SIZE <= fontSize && MAX_FONT_SIZE >= fontSize) {
-        newFont.setPointSize(fontSize);
-        m_tabs->currentWidget()->setFont(newFont);
+    auto tab = currentTab();
+    if (tab) {
+        tab->setZoom(step);
     }
 }
