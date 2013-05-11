@@ -4,6 +4,7 @@
 #include <QPlainTextEdit>
 #include <QString>
 #include <QWheelEvent>
+#include <QColor>
 
 class TabItem : public QPlainTextEdit
 {
@@ -19,6 +20,7 @@ protected:
 
 private:
     void loadFile(const QString& filename);
+    QString addHtmlColor(const QString& text) const;
 
     QString m_label;
 

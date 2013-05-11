@@ -53,6 +53,28 @@ void TabItem::loadFile(const QString& filename)
 
     while (!in.atEnd()) {
         line = in.readLine();
-        appendPlainText(line);
+        const QString html = addHtmlColor(line);
+        appendHtml(html);
     }
+}
+
+QString TabItem::addHtmlColor(const QString& text) const
+{
+    QString color = "Black";
+
+    if (text.contains("ERROR")) {
+        color = "Red";
+
+    } else if (text.contains("WARN")) {
+        color = "Orange";
+
+    } else if (text.contains("INFO")) {
+        color = "Blue";
+
+    } else if (text.contains("DEBUG")) {
+        color = "Green";
+
+    }
+
+    return "<font color=\"" + color + "\">" + text + "</font>";
 }
