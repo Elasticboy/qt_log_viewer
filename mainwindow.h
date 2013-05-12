@@ -1,15 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QWidget>
+#include <QMainWindow>
 #include <QWheelEvent>
-#include <QVBoxLayout>
 #include <QTableWidget>
 #include <QString>
 #include "menubar.h"
 #include "tabitem.h"
 
-class MainWindow : public QWidget
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
@@ -23,7 +22,6 @@ private:
     void newTab(const QString& filename);
     void setZoom(const int& step);
 
-    QVBoxLayout *m_vLayout;
     MenuBar* m_menuBar;
 
     QTabWidget* m_tabs;

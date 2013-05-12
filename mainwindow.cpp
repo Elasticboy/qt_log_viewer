@@ -5,7 +5,7 @@
 #include <memory>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent)
+    QMainWindow(parent)
 {
     initMenu();
     initLayout();
@@ -17,8 +17,6 @@ MainWindow::~MainWindow()
     m_tabs = nullptr;
     delete(m_menuBar);
     m_menuBar = nullptr;
-    delete(m_vLayout);
-    m_vLayout = nullptr;
 }
 
 void MainWindow::initMenu()
@@ -32,23 +30,19 @@ void MainWindow::initMenu()
 
     connect(m_menuBar, SIGNAL(zoomInTriggered()),   this, SLOT(zoomIn()));
     connect(m_menuBar, SIGNAL(zoomOutTriggered()),  this, SLOT(zoomOut()));
+
+    setMenuBar(m_menuBar);
 }
 
 void MainWindow::initLayout()
 {
     resize(600, 400);
 
-    m_vLayout = new QVBoxLayout();
-    m_vLayout->setContentsMargins(0, 0, 0, 0);
-
     m_tabs = new QTabWidget();
     m_tabs->setTabsClosable(true);
     connect(m_tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
-    m_vLayout->addWidget(m_tabs);
-    m_vLayout->setMenuBar(m_menuBar);
-
-    setLayout(m_vLayout);
+    setCentralWidget(m_tabs);
 }
 
 TabItem* MainWindow::currentTab() const
